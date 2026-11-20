@@ -209,21 +209,18 @@ function App() {
                 {bill.people.map(p => (
                   <span className="person" key={p.id}>
                     {p.name}
-                    <button
-                      aria-label={`Remove ${p.name}`}
-                      onClick={() => {
-                        const affected = bill.items.filter(i => i.people.includes(p.id))
-                        const exclusive = affected.filter(i => i.people.length === 1)
-                        if (affected.length && !window.confirm(`Remove ${p.name}? Shared items will be split between the remaining people.${exclusive.length ? ` ${exclusive.length} item(s) assigned only to ${p.name} will also be deleted: ${exclusive.map(i => i.name).join(', ')}.` : ''}`)) return
-                        setBill({
-                          ...bill,
-                          people: bill.people.filter(x => x.id !== p.id),
-                          items: bill.items.map(i => ({ ...i, people: i.people.filter(id => id !== p.id) })).filter(i => i.people.length > 0),
-                        })
-                        setSelected(selected.filter(id => id !== p.id))
-                        setNotice(`${p.name} removed. The receipt and everyone’s totals have been updated.`)
-                      }}
-                    >
+                    <button aria-label={`Remove ${p.name}`} onClick={() => {
+                const affected = bill.items.filter(i => i.people.includes(p.id))
+                const exclusive = affected.filter(i => i.people.length === 1)
+                if (affected.length && !window.confirm(`Remove ${p.name}? Shared items will be split between the remaining people.${exclusive.length ? ` ${exclusive.length} item(s) assigned only to ${p.name} will also be deleted: ${exclusive.map(i => i.name).join(', ')}.` : ''}`)) return
+                setBill({
+                  ...bill,
+                  people: bill.people.filter(x => x.id !== p.id),
+                  items: bill.items.map(i => ({ ...i, people: i.people.filter(id => id !== p.id) })).filter(i => i.people.length > 0),
+                })
+                setSelected(selected.filter(id => id !== p.id))
+                setNotice(`${p.name} removed. The receipt and everyone’s totals have been updated.`)
+                    }}>
                       ×
                     </button>
                   </span>
